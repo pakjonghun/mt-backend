@@ -5,7 +5,7 @@ import { IsString } from 'class-validator';
 
 @Entity()
 @ObjectType()
-export class MovieEntity extends CoreEntity {
+export class Movies extends CoreEntity {
   @Column()
   @IsString({ message: 'movie name must be string' })
   @Field(() => String)

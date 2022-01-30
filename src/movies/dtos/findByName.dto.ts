@@ -1,11 +1,11 @@
-import { MovieEntity } from '../entities/movies.entity';
+import { Movies } from '../entities/movies.entity';
 import { ArgsType, PickType, OmitType, ObjectType } from '@nestjs/graphql';
 
 @ArgsType()
-export class FindByNameDto extends PickType(MovieEntity, ['name'], ArgsType) {}
+export class FindByNameDto extends PickType(Movies, ['name'], ArgsType) {}
 
 @ObjectType()
-export class OutFindByName extends OmitType(MovieEntity, [
+export class OutFindByName extends OmitType(Movies, [
   'createdAt',
   'updatedAt',
 ]) {}
