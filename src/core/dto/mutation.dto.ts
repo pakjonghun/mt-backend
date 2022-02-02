@@ -7,8 +7,8 @@ export class OutMutation {
   @Field(() => Boolean)
   isSuccess: boolean;
 
-  @IsString()
   @IsOptional()
-  @Field(() => String, { defaultValue: null })
+  @IsString()
+  @Field(() => String, { nullable: true })
   error?: string;
 }

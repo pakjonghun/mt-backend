@@ -1,7 +1,7 @@
 import { CoreEntity } from './../../core/entities/core.entity';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { BeforeInsert, BeforeUpdate, Column, Entity } from 'typeorm';
-import { IsEmail, IsString, Length } from 'class-validator';
+import { IsBoolean, IsEmail, IsString, Length } from 'class-validator';
 
 import * as bcrypt from 'bcrypt';
 
@@ -14,10 +14,15 @@ export class Users extends CoreEntity {
   email: string;
 
   @IsString()
-  @Column()
+  @Column({ select: false })
   @Length(5, 10, { message: 'gt 5, lt 10' })
   @Field(() => String)
   password: string;
+
+  @IsBoolean()
+  @Field(() => Boolean)
+  @Column({ default: false })
+  IsValided: boolean;
 
   @BeforeInsert()
   @BeforeUpdate()

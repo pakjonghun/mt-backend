@@ -30,7 +30,10 @@ export class RegisterUserDto extends PickType(Users, ['password'], ArgsType) {
 }
 
 @ObjectType()
-class User extends OmitType(Users, ['createdAt', 'updatedAt', 'password']) {}
+class OutUser extends PickType(Users, ['email', 'id']) {}
+
+@ObjectType()
+class User extends OutUser {}
 
 @ObjectType()
 export class OutRegisterUser extends OutMutation {

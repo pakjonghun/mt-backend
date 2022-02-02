@@ -1,10 +1,12 @@
+import { OutUpdate, UpdateDto } from './dtos/update.dto';
 import { Users } from './entities/users.entity';
-import { NotFoundException } from '@nestjs/common';
+import { NotFoundException, UseGuards } from '@nestjs/common';
 import { OutRegisterUser, RegisterUserDto } from './dtos/register.dto';
 import { UserService } from './users.service';
 import { Resolver, Mutation, Args } from '@nestjs/graphql';
 import { OutLogin, LoginDto } from './dtos/login.dto';
-import { FindByEmail } from './decorators/param.decorator';
+import { FindByEmail, User } from './decorators/param.decorator';
+import { IsMe, Auth } from './user.guard';
 
 @Resolver()
 export class UsersResolvers {
@@ -22,5 +24,12 @@ export class UsersResolvers {
   ): Promise<OutLogin> {
     if (!user) throw new NotFoundException();
     return this.userService.login(user, args.password);
+  }
+
+  @Mutation(() => OutUpdate)
+  @UseGuards(IsMe)
+  @UseGuards(Auth)
+  update(@User() user: Users, @Args() args: UpdateDto): Promise<OutUpdate> {
+    return this.userService.update(user, args);
   }
 }

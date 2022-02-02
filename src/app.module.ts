@@ -15,11 +15,16 @@ import { join } from 'path';
 import { CoreModule } from './core/core.module';
 import { UsersModule } from './users/users.module';
 import { JwtModule } from './jwt/jwt.module';
+import { MailModule } from './mail/mail.module';
+import { VerifyModule } from './verify/verify.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
+      cache: true,
+      isGlobal: true,
       envFilePath: process.env.NODE_ENV === 'dev' ? '.env.dev' : '.env.test',
+      ignoreEnvFile: process.env.NODE_ENV !== 'dev',
       validationSchema: Joi.object({
         DB_HOST: Joi.string().required(),
         DB_PORT: Joi.string().required(),
@@ -27,6 +32,9 @@ import { JwtModule } from './jwt/jwt.module';
         DB_PASSPORT: Joi.string().required(),
         DB_DATABASE: Joi.string().required(),
         JWT_SECRET: Joi.string().required(),
+        MAIL_KEY: Joi.string().required(),
+        MAIL_FROM: Joi.string().required(),
+        MAIL_DOMAIN: Joi.string().required(),
       }),
     }),
     TypeOrmModule.forRoot({
@@ -42,11 +50,18 @@ import { JwtModule } from './jwt/jwt.module';
     TypeOrmModule.forFeature([UserRepo]),
     GraphQLModule.forRoot({
       autoSchemaFile: true,
+      context: ({ req }) => ({ user: req['user'] }),
+    }),
+    MailModule.forRoot({
+      MAIL_DOMAIN: process.env.MAIL_DOMAIN,
+      MAIL_KEY: process.env.MAIL_KEY,
+      MAIL_FROM: process.env.MAIL_FROM,
     }),
     JwtModule.forRoot({ SECRET: process.env.JWT_SECRET }),
     MoviesModule,
     CoreModule,
     UsersModule,
+    VerifyModule,
   ],
   controllers: [],
   providers: [],
