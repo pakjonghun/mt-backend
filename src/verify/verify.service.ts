@@ -13,4 +13,12 @@ export class VerifyService {
     await this.deleteByUserId(id);
     return this.verifyRepo.save(this.verifyRepo.create({ user: { id } }));
   }
+
+  async findByCode(code: string) {
+    return this.verifyRepo.findOne({ code });
+  }
+
+  async deleteById(id: number) {
+    await this.verifyRepo.delete(id);
+  }
 }

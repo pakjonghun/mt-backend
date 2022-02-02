@@ -59,4 +59,12 @@ export class UserService {
     const user = await this.userRepo.save(this.userRepo.create({ id, ...u }));
     return { isSuccess: true, user };
   }
+
+  async verify(code: string) {
+    const isExist = await this.verifyService.findByCode(code);
+    if (!isExist) throw new NotFoundException();
+    await this.verifyService.deleteById(isExist.id);
+    isExist.user.IsValided = true;
+    await this.userRepo.save(isExist.user);
+  }
 }
