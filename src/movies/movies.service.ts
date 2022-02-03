@@ -3,9 +3,6 @@ import { FindByNameDto } from './dtos/findByName.dto';
 import { OutRegisterMovie, RegisterMovieDto } from './dtos/register.movie.dto';
 import { OutFindAll } from './dtos/findAll.dto';
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Movies } from './entities/movies.entity';
 import { OutFindByName } from './dtos/findByName.dto';
 
 @Injectable()

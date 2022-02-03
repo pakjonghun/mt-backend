@@ -5,8 +5,8 @@ import { Injectable } from '@nestjs/common';
 export class VerifyService {
   constructor(private readonly verifyRepo: VerifyRepo) {}
 
-  private async deleteByUserId(id: number): Promise<void> {
-    this.verifyRepo.delete({ user: { id } });
+  async deleteByUserId(id: number): Promise<void> {
+    await this.verifyRepo.delete({ user: { id } });
   }
 
   async createByUserId(id: number) {

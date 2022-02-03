@@ -10,6 +10,7 @@ import {
   BadRequestException,
   Injectable,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 
 @Injectable()
@@ -34,7 +35,7 @@ export class UserService {
 
   async login(user: Users, password: string): Promise<OutLogin> {
     const isPassswordCorrect = await user.checkPassword(password);
-    if (!isPassswordCorrect) throw new NotFoundException();
+    if (!isPassswordCorrect) throw new UnauthorizedException();
     const token = this.jwtService.sign({ id: user.id });
     return { isSuccess: true, token };
   }
@@ -62,6 +63,7 @@ export class UserService {
 
   async verify(code: string) {
     const isExist = await this.verifyService.findByCode(code);
+
     if (!isExist) throw new NotFoundException();
     await this.verifyService.deleteById(isExist.id);
     isExist.user.IsValided = true;

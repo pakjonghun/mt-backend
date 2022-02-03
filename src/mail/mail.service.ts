@@ -24,7 +24,7 @@ export class MailService {
   async send(templates: TemplateOptions) {
     const form = this.formMaker(templates);
     try {
-      await got(
+      await got.post(
         `https://api.mailgun.net/v3/${this.options.MAIL_DOMAIN}/messages`,
         {
           headers: {
