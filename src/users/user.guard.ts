@@ -8,6 +8,7 @@ export class Auth implements CanActivate {
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
     const ctx = GqlExecutionContext.create(context).getContext();
+    console.log('auth', ctx['user']);
     return !!ctx['user'];
   }
 }
@@ -20,6 +21,7 @@ export class IsMe implements CanActivate {
     const temp = GqlExecutionContext.create(context);
     const ctx = temp.getContext();
     const args = temp.getArgs();
+    console.log('isMe', ctx['user']['id'], args.id);
     return ctx['user'].id === args['id'];
   }
 }

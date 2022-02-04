@@ -24,8 +24,9 @@ import { VerifyModule } from './verify/verify.module';
       cache: true,
       isGlobal: true,
       envFilePath: process.env.NODE_ENV === 'dev' ? '.env.dev' : '.env.test',
-      ignoreEnvFile: process.env.NODE_ENV !== 'dev',
+      ignoreEnvFile: process.env.NODE_ENV === 'prod',
       validationSchema: Joi.object({
+        NODE_ENV: Joi.string().valid('dev', 'test', 'prod').required(),
         DB_HOST: Joi.string().required(),
         DB_PORT: Joi.string().required(),
         DB_USERNAME: Joi.string().required(),

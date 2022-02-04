@@ -12,11 +12,13 @@ export class JwtMiddleware implements NestMiddleware {
   async use(req: any, _: any, next: () => void) {
     try {
       const token = req.headers['authorization'];
-      if (!token) next();
-      const payload = this.jwtService.verify(token);
-      if (!(typeof payload === 'object') || !('id' in payload)) next();
-      const user = await this.userRepo.findOne({ id: payload['id'] });
-      req['user'] = user;
+      if (token) {
+        const payload = this.jwtService.verify(token);
+        if (typeof payload === 'object' && 'id' in payload) {
+          const user = await this.userRepo.findOne({ id: payload['id'] });
+          req['user'] = user;
+        }
+      }
     } catch (err) {
     } finally {
       next();
